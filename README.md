@@ -1,3 +1,32 @@
+# 都道府県別の総人口推移グラフを表示する SPA
+
+## イメージ
+
+<img width="1078" alt="Photo1" src="https://user-images.githubusercontent.com/96119096/168610318-860885dd-611f-48a6-a619-0be3a3e5b160.png">
+
+<img width="1080" alt="Photo2" src="https://user-images.githubusercontent.com/96119096/168610557-a6f0dbae-4d15-446e-897f-303261d42186.png">
+
+## 環境
+
+- node v16.13.1
+- create-react-app v5.0.1
+- react v18.0.4
+- typescript v4.6.4
+
+## 要件
+
+- [RESAS(地域経済分析システム)](https://opendata.resas-portal.go.jp) API の「都道府県一覧」から API を取得する
+- API レスポンスから都道府県一覧のチェックボックスを動的に生成する
+- 都道府県にチェックを入れると、RESAS API から選択された都道府県の「人口構成」を取得する
+- 人口構成 API レスポンスから、X 軸:年、Y 軸:人口数の折れ線グラフを動的に生成して表示する
+- 都道府県一覧および総人口情報は RESAS API のデータを用いる
+- グラフは[Highcharts](https://www.highcharts.com)を用いて描画する
+- グラフライブラリは任意のものを用いる
+- Google Chrome 最新版で正しく動く
+- 「全て選択」、「クリア」ボタンも実装した
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -44,9 +73,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Snap Shot
-
-<img width="1078" alt="Photo1" src="https://user-images.githubusercontent.com/96119096/168610318-860885dd-611f-48a6-a619-0be3a3e5b160.png">
-
-<img width="1080" alt="Photo2" src="https://user-images.githubusercontent.com/96119096/168610557-a6f0dbae-4d15-446e-897f-303261d42186.png">
