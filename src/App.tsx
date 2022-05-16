@@ -94,7 +94,6 @@ export const App = () => {
       <SMainLoading>
         <SLoadingSpinner>
           <SLoadingTitle>Now Loading</SLoadingTitle>
-
           <BeatLoader color={'#FFBB7A'} size={40} margin={4} />
         </SLoadingSpinner>
       </SMainLoading>
