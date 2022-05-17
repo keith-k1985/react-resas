@@ -2,7 +2,7 @@
 
 React + HighCharts で都道府県別の総人口推移グラフを表示するアプリを構築した
 
-> Netlify で公開しています  
+> Netlify で公開中
 > https://react-resas-population.netlify.app/
 
 ## イメージ
