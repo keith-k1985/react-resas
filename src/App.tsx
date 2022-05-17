@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { Prefectures } from './components/Prefectures';
 import { Graph } from './Graph/Graph';
@@ -60,12 +61,10 @@ export const App = () => {
 
   useEffect(() => {
     fetchPrefecture();
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     fetchCompositions(prefectures);
-    // eslint-disable-next-line
   }, [prefectures]);
 
   const ShowGraph = () => {
