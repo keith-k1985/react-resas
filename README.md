@@ -8,9 +8,11 @@ React + HighCharts で都道府県別の総人口推移グラフを表示する�
 ## イメージ
 
 イメージ ①
+
 <img width="1078" alt="Photo1" src="https://user-images.githubusercontent.com/96119096/168610318-860885dd-611f-48a6-a619-0be3a3e5b160.png">
 
 イメージ ②
+
 <img width="1080" alt="Photo2" src="https://user-images.githubusercontent.com/96119096/168610557-a6f0dbae-4d15-446e-897f-303261d42186.png">
 
 ## 環境
@@ -19,6 +21,7 @@ React + HighCharts で都道府県別の総人口推移グラフを表示する�
 - create-react-app v5.0.1
 - react v18.0.4
 - typescript v4.6.4
+- Highcharts：https://www.highcharts.com/
 
 ## 要件
 
@@ -29,9 +32,12 @@ React + HighCharts で都道府県別の総人口推移グラフを表示する�
 - 都道府県一覧および総人口情報は RESAS API のデータを用いる
 - グラフは[Highcharts](https://www.highcharts.com)を用いて描画する
 - グラフライブラリは任意のものを用いる
-- Google Chrome 最新版で正しく動く
+- Google Chrome 最新版で正しく動くこと
 
-##
+## API Key
+
+- プロジェクト直下に`.env.local`ファイルを作成し、取得した API を書き込む
+  `REACT_APP_RESAS_API_KEY=<取得したAPI_KEY>`
 
 ---
 
