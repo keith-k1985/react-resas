@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Prefectures } from './Prefectures';
-import { Graph } from './Graph';
+import { Prefectures } from './components/Prefectures';
+import { Graph } from './Graph/Graph';
 import axios, { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
 import { prefectures } from './types/index';

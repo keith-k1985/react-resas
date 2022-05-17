@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import styled from 'styled-components';
-import { prefectures } from './types/index';
-import { populations } from './types/index';
-import { series } from './types/index';
+import { prefectures } from '../types/index';
+import { populations } from '../types/index';
+import { series } from '../types/index';
 
 const years: Array<string> = [];
 

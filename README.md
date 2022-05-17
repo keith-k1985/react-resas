@@ -1,9 +1,16 @@
 # 都道府県別の総人口推移グラフを表示する SPA
 
+React + HighCharts で都道府県別の総人口推移グラフを表示するアプリを構築した
+
+> Netlify で公開しています  
+> https://react-resas-population.netlify.app/
+
 ## イメージ
 
+イメージ ①
 <img width="1078" alt="Photo1" src="https://user-images.githubusercontent.com/96119096/168610318-860885dd-611f-48a6-a619-0be3a3e5b160.png">
 
+イメージ ②
 <img width="1080" alt="Photo2" src="https://user-images.githubusercontent.com/96119096/168610557-a6f0dbae-4d15-446e-897f-303261d42186.png">
 
 ## 環境
@@ -23,7 +30,8 @@
 - グラフは[Highcharts](https://www.highcharts.com)を用いて描画する
 - グラフライブラリは任意のものを用いる
 - Google Chrome 最新版で正しく動く
-- 「全て選択」、「クリア」ボタンも実装した
+
+##
 
 ---
 

@@ -2,7 +2,7 @@ import { PrefecturesButtonAllSelect } from './PrefecturesButtonAllSelect';
 import { PrefecturesButtonClear } from './PrefecturesButtonClear';
 import { PrefecturesItem } from './PrefecturesItem';
 import styled from 'styled-components';
-import { prefectures } from './types/index';
+import { prefectures } from '../types/index';
 
 export const Prefectures = ({
   prefectures,
