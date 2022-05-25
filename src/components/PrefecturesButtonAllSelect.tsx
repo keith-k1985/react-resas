@@ -1,32 +1,35 @@
+import { memo, useCallback } from 'react';
 import styled from 'styled-components';
 import { prefectures } from '../types/index';
 
-export const PrefecturesButtonAllSelect = ({
-  prefectures,
-  setPrefectures,
-}: {
-  prefectures: Array<prefectures>;
-  setPrefectures: any;
-}) => {
-  const clickButton = () => {
-    const selectAllPrefectures: Array<prefectures> = prefectures.map(
-      (prefecture: prefectures) => {
-        return {
-          prefCode: prefecture.prefCode,
-          prefName: prefecture.prefName,
-          isSelected: true,
-        };
-      }
-    );
-    setPrefectures(selectAllPrefectures);
-  };
+export const PrefecturesButtonAllSelect = memo(
+  ({
+    prefectures,
+    setPrefectures,
+  }: {
+    prefectures: Array<prefectures>;
+    setPrefectures: any;
+  }) => {
+    const clickButton = useCallback(() => {
+      const selectAllPrefectures: Array<prefectures> = prefectures.map(
+        (prefecture: prefectures) => {
+          return {
+            prefCode: prefecture.prefCode,
+            prefName: prefecture.prefName,
+            isSelected: true,
+          };
+        }
+      );
+      setPrefectures(selectAllPrefectures);
+    }, [prefectures, setPrefectures]);
 
-  return (
-    <SButton className='all' onClick={clickButton}>
-      すべて選択
-    </SButton>
-  );
-};
+    return (
+      <SButton className='all' onClick={clickButton}>
+        すべて選択
+      </SButton>
+    );
+  }
+);
 
 const SButton = styled.button`
   cursor: pointer;
