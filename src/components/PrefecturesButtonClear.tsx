@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import { prefectures } from '../types/index';
 
 export const PrefecturesButtonClear = ({
-  setPrefectures,
   prefectures,
+  setPrefectures,
 }: {
-  setPrefectures: any;
   prefectures: Array<prefectures>;
+  setPrefectures: any;
 }) => {
   const clickButton = () => {
     const clearedPrefectures: Array<prefectures> = prefectures.map(

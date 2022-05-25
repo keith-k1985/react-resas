@@ -8,6 +8,7 @@ import { prefectures } from './types/index';
 import { populations } from './types/index';
 import { compositionUrl } from './types/index';
 import BeatLoader from 'react-spinners/BeatLoader';
+import { PrefecturesProvider } from './Provider/PrefecturesProvider';
 
 export const App = () => {
   const [prefectures, setPrefectures] = useState<Array<prefectures>>([]);
@@ -80,13 +81,15 @@ export const App = () => {
   const ShowContents = () => {
     if (prefectures.length && populations.length) {
       return (
-        <SMain>
-          <Prefectures
-            prefectures={prefectures}
-            setPrefectures={setPrefectures}
-          />
-          <ShowGraph />
-        </SMain>
+        <PrefecturesProvider>
+          <SMain>
+            <Prefectures
+              prefectures={prefectures}
+              setPrefectures={setPrefectures}
+            />
+            <ShowGraph />
+          </SMain>
+        </PrefecturesProvider>
       );
     }
     return (
