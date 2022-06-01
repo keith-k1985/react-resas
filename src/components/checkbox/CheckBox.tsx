@@ -1,86 +1,61 @@
-import { PrefecturesButtonAllSelect } from '../button/PrefecturesButtonAllSelect';
-import { PrefecturesButtonClear } from '../button/PrefecturesButtonClear';
-import { PrefecturesItem } from './CheckBoxItem';
+// 都道府県 & チェックボックス
+import { FC } from 'react';
 import styled from 'styled-components';
-import { prefectures } from '../../types/index';
+import { checkboxtype } from '../../types';
 
-export const CheckBox = ({
-  prefectures,
-  setPrefectures,
-}: {
-  prefectures: Array<prefectures>;
-  setPrefectures: any;
-}) => {
-  const togglePref = (event: any) => {
-    const target = event.target;
-    const clickedTarget = prefectures.find(
-      (prefecture: prefectures) => prefecture.prefName === target.id
-    );
-    if (clickedTarget) {
-      clickedTarget.isSelected = !clickedTarget.isSelected;
-    }
-    const toggledPrefectures = prefectures.map((prefecture) => prefecture);
-    setPrefectures(toggledPrefectures);
-  };
+export const CheckBox: FC<checkboxtype> = (props) => {
+  const { prefectures, onChanges } = props;
 
   return (
-    <SContainer>
-      <STitle>都道府県を選択してください</STitle>
-      <SButtons>
-        <PrefecturesButtonAllSelect
-          prefectures={prefectures}
-          setPrefectures={setPrefectures}
-        />
-        <PrefecturesButtonClear
-          prefectures={prefectures}
-          setPrefectures={setPrefectures}
-        />
-      </SButtons>
-      <SList>
-        {prefectures.map((prefecture: prefectures) => {
-          return (
-            <SItem key={prefecture.prefCode}>
-              <PrefecturesItem
-                prefecture={prefecture}
-                togglePref={togglePref}
-              />
-            </SItem>
-          );
-        })}
-      </SList>
-    </SContainer>
+    <>
+      <SubTitle>都道府県</SubTitle>
+      <Container>
+        {prefectures.map((prefecture) => (
+          <Box key={prefecture.prefName}>
+            <input
+              style={{ cursor: 'pointer' }}
+              id={'checkbox' + prefecture.prefCode}
+              type='checkbox'
+              name='prefecture name'
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChanges(
+                  prefecture.prefName,
+                  prefecture.prefCode,
+                  e.target.checked
+                );
+              }}
+            />
+            <Name htmlFor={'checkbox' + prefecture.prefCode}>
+              {prefecture.prefName.length === 3 //3文字のとき空白をあける
+                ? '　' + prefecture.prefName
+                : prefecture.prefName}
+            </Name>
+          </Box>
+        ))}
+      </Container>
+    </>
   );
 };
 
-const SContainer = styled.div`
-  max-width: 1440px;
-  margin: 0 auto 60px;
+const SubTitle = styled.h2`
+  margin-left: 16px;
+  margin-bottom: 0;
+  font-weight: 500;
 `;
-
-const STitle = styled.h2`
-  text-align: left;
-  color: #333;
-  font-size: calc(8px + 2vmin);
-`;
-
-const SButtons = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0 0 20px 0;
-`;
-
-const SList = styled.ul`
-  list-style: none;
-  padding: 0;
+const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding: 10px;
+  justify-content: flex-start;
+  justify-self: auto;
 `;
-
-const SItem = styled.li`
-margin: 0 10px 20px 0;
-@media screen and (max-width: 600px) {
-  width: calc(100% / 3);
-  margin-right: 0;
-  display: flex;
+const Box = styled.div`
+  text-align: center;
+  padding: 4px;
+  margin: 0.5rem;
+`;
+const Name = styled.label`
+  display: contents;
+  margin-left: 1em;
+  cursor: pointer;
 `;

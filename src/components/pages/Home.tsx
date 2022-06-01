@@ -1,87 +1,96 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { CheckBox } from '../checkbox/CheckBox';
 import { Graph } from '../Graph/Graph';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import styled from 'styled-components';
 import { prefectures } from '../../types/index';
 import { populations } from '../../types/index';
-import { compositionUrl } from '../../types/index';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 export const Home = () => {
-  const [prefectures, setPrefectures] = useState<Array<prefectures>>([]);
-  const [populations, setPopulations] = useState<Array<populations>>([]);
-  const resasConfig: AxiosRequestConfig = {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.REACT_APP_RESAS_API_KEY || '',
-    },
-  };
-  const prefUrl: string =
-    'https://opendata.resas-portal.go.jp/api/v1/prefectures';
-  const fetchPrefecture = async () => {
-    await axios.get(prefUrl, resasConfig).then((response) => {
-      if (response.data.result) {
-        const prefList: Array<prefectures> = response.data.result.map(
-          (item: prefectures) => {
-            return {
-              prefCode: item.prefCode,
-              prefName: item.prefName,
-              isSelected: false,
-            };
-          }
-        );
-        setPrefectures(prefList);
-      }
-    });
-  };
-  const fetchCompositions = async (prefectures: Array<prefectures>) => {
-    const compositionUrls: Array<compositionUrl> = [];
-    for (let i = 0; i < prefectures.length; i++) {
-      const prefCode = i + 1;
-      compositionUrls.push({
-        prefCode: prefCode,
-        url:
-          'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=' +
-          prefCode,
-      });
-    }
-    const compositions: Array<populations> = [];
-    for (let compositionUrl of compositionUrls) {
-      await axios.get(compositionUrl.url, resasConfig).then((response) => {
-        compositions.push({
-          prefCode: compositionUrl.prefCode,
-          data: response.data.result.data[0].data,
-        });
-      });
-    }
-    setPopulations(compositions);
-  };
+  // 都道府県情報
+  const [prefectures, setPreFectures] = useState<Array<prefectures>>([]);
+  // 人口情報,年
+  const [prefPopulation, setPrefPopulation] = useState<Array<populations>>([]);
 
+  // マウント時，情報取得
   useEffect(() => {
-    fetchPrefecture();
+    axios
+      .get('https://opendata.resas-portal.go.jp/api/v1/prefectures', {
+        headers: { 'X-API-KEY': `${process.env.REACT_APP_API_KEY}` },
+      })
+      .then((res) => {
+        setPreFectures(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
   }, []);
 
-  useEffect(() => {
-    fetchCompositions(prefectures);
-  }, [prefectures]);
+  // チェックボックスをクリックしたとき
+  const handleClickCheck = (
+    prefName: string,
+    prefCode: number,
+    check: boolean
+  ) => {
+    let prefPopulationCopy = prefPopulation.slice(); // 配列コピー
+
+    if (check) {
+      // チェックをつけたとき(check===true)
+      if (
+        prefPopulationCopy.findIndex((value) => value.prefName === prefName) !==
+        -1
+      ) {
+        return;
+      }
+      axios
+        .get(
+          'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=' +
+            String(prefCode),
+          {
+            headers: { 'X-API-KEY': `${process.env.REACT_APP_API_KEY}` },
+          }
+        )
+        .then((res) => {
+          prefPopulationCopy.push({
+            prefCode: prefCode,
+            prefName: prefName,
+            data: res.data.result.data[0].data,
+          });
+          setPrefPopulation(prefPopulationCopy);
+        })
+        .catch((err) => {
+          alert(err);
+          return;
+        });
+    } else {
+      // チェックを外したとき(check===false)
+      const deleteIndex = prefPopulationCopy.findIndex(
+        (value) => value.prefName === prefName
+      );
+      if (deleteIndex === -1) {
+        return;
+      }
+      prefPopulationCopy.splice(deleteIndex, 1);
+      setPrefPopulation(prefPopulationCopy);
+    }
+  };
 
   const ShowGraph = () => {
     const isSelected = prefectures.find(
       (prefecture: prefectures) => prefecture.isSelected
     );
     if (isSelected) {
-      return <Graph prefectures={prefectures} populations={populations} />;
+      return <Graph populationdata={prefPopulation} />;
     }
     return <></>;
   };
 
   const ShowContents = () => {
-    if (prefectures.length && populations.length) {
+    if (prefectures.length && prefPopulation.length) {
       return (
         <SMain>
-          <CheckBox prefectures={prefectures} setPrefectures={setPrefectures} />
+          <CheckBox prefectures={prefectures} onChanges={handleClickCheck} />
           <ShowGraph />
         </SMain>
       );

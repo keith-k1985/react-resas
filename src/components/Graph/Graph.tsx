@@ -1,73 +1,64 @@
-import { useEffect } from 'react';
-import * as Highcharts from 'highcharts';
+// グラフ with highcharts
+import { FC } from 'react';
+import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import styled from 'styled-components';
-import { prefectures } from '../../types/index';
-import { populations } from '../../types/index';
-import { series } from '../../types/index';
+import { popdata } from '../../types';
 
-const years: Array<string> = [];
+export const Graph: FC<popdata> = (props) => {
+  const { populationdata } = props;
+  let series: Highcharts.SeriesOptionsType[] = []; // 折線グラフ 配列
+  let years = []; // 年 配列
 
-export const Graph = ({
-  prefectures,
-  populations,
-}: {
-  prefectures: Array<prefectures>;
-  populations: Array<populations>;
-}) => {
-  const selectedPref = prefectures.filter(
-    (prefecture: prefectures) => prefecture.isSelected
-  );
-  const selectedPrefCode = selectedPref.map(
-    (prefecture) => prefecture.prefCode
-  );
-  const selectedPopulations = populations.filter((population) =>
-    selectedPrefCode.includes(population.prefCode)
-  );
-  const series: Array<series> | any = selectedPopulations.map((population) => {
-    const values = population.data.map((data) => data.value);
-    const prefName = selectedPref.find(
-      (response) => response.prefCode === population.prefCode
-    )?.prefName;
-    return {
-      type: 'line',
-      name: prefName,
-      data: values,
-    };
-  });
-  useEffect(() => {
-    if (populations[0] !== undefined) {
-      for (const year of populations[0].data.map((item) => String(item.year))) {
-        years.push(year);
-      }
+  for (let pop of populationdata) {
+    let data = [];
+
+    for (let pdate of pop.data) {
+      data.push(pdate.value);
+      years.push(String(pdate.year));
     }
-  }, [populations]);
+
+    series.push({
+      type: 'line',
+      name: pop.prefName,
+      data: data,
+    });
+  }
+
   const options: Highcharts.Options = {
     title: {
-      text: '都道府県別人口推移',
+      text: '総人口推移',
     },
+    // x軸
+    xAxis: {
+      title: {
+        text: '年度',
+      },
+      categories: years,
+    },
+    // y軸
     yAxis: {
       title: {
-        text: '人口(人)',
+        text: '人口数',
       },
     },
-    xAxis: {
-      categories: years,
-      title: {
-        text: '年度(年度)',
-      },
-    },
-    series: series,
+    // 配列が空のとき or 存在するとき
+    series:
+      series.length === 0
+        ? [{ type: 'line', name: '都道府県名', data: [] }]
+        : series,
   };
 
   return (
-    <SGraph>
-      <HighchartsReact highcharts={Highcharts} options={options} />
-    </SGraph>
+    <>
+      <Container>
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      </Container>
+    </>
   );
 };
 
-const SGraph = styled.div`
-  max-width: 1440px;
-  margin: 0 auto;
+const Container = styled.div`
+  margin-top: 2rem;
+  padding: 12px;
 `;
