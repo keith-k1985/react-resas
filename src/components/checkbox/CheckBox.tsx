@@ -1,10 +1,10 @@
-import { PrefecturesButtonAllSelect } from './PrefecturesButtonAllSelect';
-import { PrefecturesButtonClear } from './PrefecturesButtonClear';
-import { PrefecturesItem } from './PrefecturesItem';
+import { PrefecturesButtonAllSelect } from '../button/PrefecturesButtonAllSelect';
+import { PrefecturesButtonClear } from '../button/PrefecturesButtonClear';
+import { PrefecturesItem } from './CheckBoxItem';
 import styled from 'styled-components';
-import { prefectures } from '../types/index';
+import { prefectures } from '../../types/index';
 
-export const Prefectures = ({
+export const CheckBox = ({
   prefectures,
   setPrefectures,
 }: {

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { prefectures } from '../types/index';
+import { prefectures } from '../../types/index';
 
 export const PrefecturesButtonAllSelect = ({
   prefectures,
