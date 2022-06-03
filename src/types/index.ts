@@ -1,12 +1,14 @@
+interface result {
+  prefCode: number;
+  prefName: string;
+}
+
 export interface prefectures {
   prefCode: number;
   prefName: string;
   message: null;
   isSelected: boolean;
-  result: {
-    prefCode: number;
-    prefName: string;
-  };
+  result: Array<result>;
 }
 
 interface data {

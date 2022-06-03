@@ -1,9 +1,19 @@
 // 都道府県 & チェックボックス
 import { FC } from 'react';
 import styled from 'styled-components';
-import { checkboxtype } from '../../types';
 
-export const CheckBox: FC<checkboxtype> = (props) => {
+type Props = {
+  // 都道府県
+  prefectures:
+    | {
+        prefCode: number;
+        prefName: string;
+      }[];
+  // チェック時イベント
+  onChanges: (name: string, prefName: number, check: boolean) => void;
+};
+
+export const CheckBox: FC<Props> = (props) => {
   const { prefectures, onChanges } = props;
 
   return (
@@ -38,7 +48,7 @@ export const CheckBox: FC<checkboxtype> = (props) => {
 };
 
 const SubTitle = styled.h2`
-  margin-left: 16px;
+  text-align: left;
   margin-bottom: 0;
   font-weight: 500;
 `;

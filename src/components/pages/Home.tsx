@@ -1,29 +1,46 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { CheckBox } from '../checkbox/CheckBox';
 import { Graph } from '../Graph/Graph';
 import axios from 'axios';
 import styled from 'styled-components';
-import { prefectures } from '../../types/index';
-import { populations } from '../../types/index';
-import BeatLoader from 'react-spinners/BeatLoader';
+import { Loader } from '../loader/Loader';
+import { LoadError } from '../loader/LoadError';
 
-export const Home = () => {
+export const Home: FC = () => {
   // 都道府県情報
-  const [prefectures, setPreFectures] = useState<Array<prefectures>>([]);
+  const [prefectures, setPreFectures] = useState<{
+    message: null;
+    result: {
+      prefCode: number;
+      prefName: string;
+      check: boolean;
+    }[];
+  } | null>(null);
+
   // 人口情報,年
-  const [prefPopulation, setPrefPopulation] = useState<Array<populations>>([]);
+  const [prefPopulation, setPrefPopulation] = useState<
+    { prefName: string; data: { year: number; value: number }[] }[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   // マウント時，情報取得
   useEffect(() => {
+    setLoading(true);
+    setError(false);
     axios
       .get('https://opendata.resas-portal.go.jp/api/v1/prefectures', {
         headers: { 'X-API-KEY': `${process.env.REACT_APP_API_KEY}` },
       })
       .then((res) => {
         setPreFectures(res.data);
+        setLoading(false);
       })
-      .catch((err) => {
-        alert(err);
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -53,7 +70,6 @@ export const Home = () => {
         )
         .then((res) => {
           prefPopulationCopy.push({
-            prefCode: prefCode,
             prefName: prefName,
             data: res.data.result.data[0].data,
           });
@@ -76,42 +92,33 @@ export const Home = () => {
     }
   };
 
-  const ShowGraph = () => {
-    const isSelected = prefectures.find(
-      (prefecture: prefectures) => prefecture.isSelected
-    );
-    if (isSelected) {
-      return <Graph populationdata={prefPopulation} />;
-    }
-    return <></>;
-  };
-
-  const ShowContents = () => {
-    if (prefectures.length && prefPopulation.length) {
-      return (
-        <SMain>
-          <CheckBox prefectures={prefectures} onChanges={handleClickCheck} />
-          <ShowGraph />
-        </SMain>
-      );
-    }
-    return (
-      <SMainLoading>
-        <SLoadingSpinner>
-          <SLoadingTitle>Now Loading</SLoadingTitle>
-          <BeatLoader color={'#FFBB7A'} size={40} margin={4} />
-        </SLoadingSpinner>
-      </SMainLoading>
-    );
-  };
-
   return (
-    <SContainer>
-      <SHeader>
-        <STitle>都道府県別人口推移</STitle>
-      </SHeader>
-      <ShowContents />
-    </SContainer>
+    <>
+      <div>
+        {error ? (
+          <LoadError />
+        ) : loading ? (
+          <Loader />
+        ) : (
+          <>
+            <SContainer>
+              <SHeader>
+                <STitle>都道府県別人口推移</STitle>
+              </SHeader>
+              <SMain>
+                {prefectures && (
+                  <CheckBox
+                    prefectures={prefectures.result}
+                    onChanges={handleClickCheck}
+                  />
+                )}
+                <Graph populationdata={prefPopulation} />
+              </SMain>
+            </SContainer>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
@@ -122,14 +129,6 @@ const SMain = styled.main`
   @media screen and (max-width: 600px) {
     padding: 90px 10px 50px;
   }
-`;
-
-const SMainLoading = styled.main`
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const SContainer = styled.div`
@@ -157,16 +156,4 @@ const SHeader = styled.header`
 
 const STitle = styled.h1`
   margin: 0;
-`;
-
-const SLoadingTitle = styled.h2`
-  font-size: 40px;
-  background: -webkit-linear-gradient(45deg, #54d0ff, #9f92ff 20%, #ff7689 90%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
-
-const SLoadingSpinner = styled.div`
-  justify-content: center;
-  align-items: center;
 `;

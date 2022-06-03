@@ -3,9 +3,15 @@ import { FC } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import styled from 'styled-components';
-import { popdata } from '../../types';
 
-export const Graph: FC<popdata> = (props) => {
+type Props = {
+  populationdata: {
+    prefName: string;
+    data: { year: number; value: number }[]; // 年，年の人数
+  }[];
+};
+
+export const Graph: FC<Props> = (props) => {
   const { populationdata } = props;
   let series: Highcharts.SeriesOptionsType[] = []; // 折線グラフ 配列
   let years = []; // 年 配列
