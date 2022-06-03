@@ -109,6 +109,7 @@ export const Home: FC = () => {
                 {prefectures && (
                   <CheckBox
                     prefectures={prefectures.result}
+                    setPreFectures={setPreFectures}
                     onChanges={handleClickCheck}
                   />
                 )}

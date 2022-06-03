@@ -11,6 +11,11 @@ export interface prefectures {
   result: Array<result>;
 }
 
+export interface compositionUrl {
+  prefCode: number;
+  url: string;
+}
+
 interface data {
   year: number;
   value: number;

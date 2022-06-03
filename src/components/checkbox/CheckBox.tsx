@@ -1,6 +1,7 @@
 // 都道府県 & チェックボックス
 import { FC } from 'react';
 import styled from 'styled-components';
+import { ClearButton } from '../button/ClearButton';
 
 type Props = {
   // 都道府県
@@ -9,16 +10,18 @@ type Props = {
         prefCode: number;
         prefName: string;
       }[];
+  setPreFectures: any;
   // チェック時イベント
   onChanges: (name: string, prefName: number, check: boolean) => void;
 };
 
 export const CheckBox: FC<Props> = (props) => {
-  const { prefectures, onChanges } = props;
+  const { prefectures, setPreFectures, onChanges } = props;
 
   return (
     <>
       <SubTitle>都道府県</SubTitle>
+      <ClearButton prefectures={prefectures} setPreFectures={setPreFectures} />
       <Container>
         {prefectures.map((prefecture) => (
           <Box key={prefecture.prefName}>
