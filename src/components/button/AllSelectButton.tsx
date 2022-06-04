@@ -13,7 +13,7 @@ type Props = {
   setPreFectures: any;
 };
 
-export const ClearButton: FC<Props> = () => {
+export const AllSelectButton: FC<Props> = () => {
   const [prefectures, setPreFectures] = useState([]);
 
   const resasConfig: AxiosRequestConfig = {
@@ -32,7 +32,7 @@ export const ClearButton: FC<Props> = () => {
             return {
               prefCode: item.prefCode,
               prefName: item.prefName,
-              check: false,
+              check: true,
             };
           }
         );
@@ -60,9 +60,10 @@ export const ClearButton: FC<Props> = () => {
   useEffect(() => {
     fetchCompositions(prefectures);
   }, []);
+
   return (
-    <SButton className='clear' onClick={fetchPreFecture}>
-      クリア
+    <SButton className='all' onClick={fetchPreFecture}>
+      すべて選択
     </SButton>
   );
 };
@@ -75,8 +76,9 @@ const SButton = styled.button`
   padding: 10px 0;
   border: none;
   border-radius: 5px;
-  background-color: rgb(109, 2, 2);
+  background-color: rgb(5, 5, 112);
+  margin-right: 15px;
   &:hover {
-    background-color: rgb(218, 14, 14);
+    background-color: rgb(4, 4, 243);
   }
 `;

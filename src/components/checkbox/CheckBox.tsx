@@ -1,6 +1,7 @@
 // 都道府県 & チェックボックス
 import { FC } from 'react';
 import styled from 'styled-components';
+import { AllSelectButton } from '../button/AllSelectButton';
 import { ClearButton } from '../button/ClearButton';
 
 type Props = {
@@ -21,6 +22,10 @@ export const CheckBox: FC<Props> = (props) => {
   return (
     <>
       <SubTitle>都道府県</SubTitle>
+      <AllSelectButton
+        prefectures={prefectures}
+        setPreFectures={setPreFectures}
+      />
       <ClearButton prefectures={prefectures} setPreFectures={setPreFectures} />
       <Container>
         {prefectures.map((prefecture) => (
