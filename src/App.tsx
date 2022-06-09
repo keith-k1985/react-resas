@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { Prefectures } from './components/Prefectures';
@@ -15,7 +16,10 @@ export const App = () => {
   const resasConfig: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': process.env.REACT_APP_RESAS_API_KEY || '',
+      'x-api-key':
+        window.localStorage.getItem('api_key') ||
+        process.env.REACT_APP_RESAS_API_KEY ||
+        '',
     },
   };
   const prefUrl: string =
