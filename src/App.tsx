@@ -11,15 +11,19 @@ import { compositionUrl } from './types/index';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 export const App = () => {
-  const [prefectures, setPrefectures] = useState<Array<prefectures>>([]);
+  const [prefectures, setPrefectures] = useState<Array<prefectures>>(() => {
+    const savedPrefectures = window.localStorage.getItem('prefectures');
+    if (savedPrefectures) {
+      return JSON.parse(savedPrefectures);
+    } else {
+      return [];
+    }
+  });
   const [populations, setPopulations] = useState<Array<populations>>([]);
   const resasConfig: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key':
-        window.localStorage.getItem('api_key') ||
-        process.env.REACT_APP_RESAS_API_KEY ||
-        '',
+      'x-api-key': process.env.REACT_APP_RESAS_API_KEY || '',
     },
   };
   const prefUrl: string =
@@ -68,7 +72,10 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    fetchCompositions(prefectures);
+    localStorage.setItem(
+      'prefectures',
+      JSON.stringify(fetchCompositions(prefectures))
+    );
   }, [prefectures]);
 
   const ShowGraph = () => {

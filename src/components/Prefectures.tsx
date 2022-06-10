@@ -12,7 +12,7 @@ export const Prefectures = ({
   setPrefectures: any;
 }) => {
   const togglePref = (event: any) => {
-    const target: any = localStorage.setItem('api_key', event.target.value);
+    const target = event.target;
     const clickedTarget = prefectures.find(
       (prefecture: prefectures) => prefecture.prefName === target.id
     );
