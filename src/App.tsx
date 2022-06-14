@@ -12,14 +12,18 @@ import BeatLoader from 'react-spinners/BeatLoader';
 
 export const App = () => {
   const [prefectures, setPrefectures] = useState<Array<prefectures>>(() => {
-    const savedPrefectures = window.localStorage.getItem('prefectures');
+    const savedPrefectures = localStorage.getItem('prefectures');
     if (savedPrefectures) {
       return JSON.parse(savedPrefectures);
     } else {
       return [];
     }
   });
+  useEffect(() => {
+    localStorage.setItem('prefectures', JSON.stringify(prefectures));
+  }, [prefectures]);
   const [populations, setPopulations] = useState<Array<populations>>([]);
+
   const resasConfig: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'application/json',
@@ -44,6 +48,7 @@ export const App = () => {
       }
     });
   };
+
   const fetchCompositions = async (prefectures: Array<prefectures>) => {
     const compositionUrls: Array<compositionUrl> = [];
     for (let i = 0; i < prefectures.length; i++) {
@@ -72,10 +77,7 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(
-      'prefectures',
-      JSON.stringify(fetchCompositions(prefectures))
-    );
+    fetchCompositions(prefectures);
   }, [prefectures]);
 
   const ShowGraph = () => {
